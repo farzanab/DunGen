@@ -1,0 +1,32 @@
+player : playboi
+wall_colour : cyan
+floor_colour : black
+obstacle_colour : light_violet
+obstacle_char : *
+rooms : 8
+medium: 3
+
+badboi : 10
+random_enemy : 24
+
+define player
+char : p
+colour : gold
+hp : 40
+attack : 20
+defence: 8
+mana : 0
+
+define monster badboi
+char : b
+colour : dark_red
+hp : 45
+attack : 10
+behav : basic
+
+define monster random_enemy
+char : r
+colour: black
+hp : 10
+behav : brave
+defence : 15

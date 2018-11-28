@@ -1,0 +1,107 @@
+name: sample
+rooms: 10
+badboi: 20
+health_boost : 5
+randomenemy: 10
+monster: 15
+map_type   :   1
+player: playboi
+wall_colour: dark_cyan
+obstacle_char : #
+obstacle_colour : cyan
+fov: 4
+ 
+define player
+char : +
+colour: silver
+hp: 25
+attack: 15
+defence: 10
+mana : 30
+ 
+define monster badboi
+char : b
+colour: crimson
+hp :   45
+behav: basic
+defence: 5
+ 
+define behav junk
+var c = phealth;
+var d = health;
+if {c < d/2}{
+    move (2,2);
+} { 
+    attack(5);
+}
+
+define spell x
+name: area blast
+cost : 10
+dirn : no
+var a = x-5;
+var b = y-5;
+while {a <= x+5}{
+    b = y-5;
+    while {b <= y+5} {
+        if {is_monster(a, b) & in_fov(a, b)}{
+            hit(a, b, 50);
+        }
+        b = b+1;
+    }
+    a = a+1;
+}
+
+define spell s
+name : sui
+hit(x, y, 5);
+
+define spell d
+name : lightning bolt
+cost : 2
+dirn : true
+x = x + 1;
+var w = is_wall(x, y);
+var flag = 1;
+while {!w & flag}{
+if {is_monster(x, y)}{
+hit(x, y, 10);
+flag = 0;
+}
+x = x + 1;
+w = is_wall(x, y);
+}
+
+define spell f
+name : health blast
+cost : 15
+health = health + 10;
+maxhealth = 3*maxhealth/2;
+
+define spell m
+mana = mana + 2;
+
+define spell w
+name : diag hit
+cost : 5
+dirn : yes
+
+var c = 1;
+var b = 0;
+while {c <= 10} {
+    b = ~c;
+    while {b <= c}{
+        if {is_monster(x+c, y+b)}{
+            hit(x+c, y+b, 10);
+        }
+        b = b + 1;
+    }
+    c = c + 1;    
+}
+
+define monster randomenemy
+char: r
+colour: white
+hp: 20
+behav: junk
+attack:20

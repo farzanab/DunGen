@@ -1,0 +1,93 @@
+name : finally some cool stuff
+player: Pete
+wall_char : w
+wall_colour : blue
+obstacle_colour : sepia
+obstacle_char : o
+rooms:5
+
+random_enemy : 10
+green_goblin : 10
+hobgoblin    : 6
+red_goblin   : 3
+
+define player
+char : +
+colour : crimson
+hp : 300
+attack : 20
+defence: 10
+
+define monster random_enemy
+char : r
+colour : light_red
+behav : useless
+
+define monster green_goblin
+char : g
+colour: green
+hp : 10
+defence : 15
+attack : 10
+behav : goblin
+
+define monster hobgoblin
+char : g
+colour: yellow
+hp : 20
+defence : 17
+attack : 13
+behav : goblin
+
+define monster red_goblin
+char : g
+colour: red
+hp : 40
+defence : 19
+attack : 15
+behav : goblin
+
+define behav useless
+if {health < maxhealth * 2/5}{
+    var c = maxhealth/health;
+    while {c > 0} {
+        move_random();
+        c = c - 1;
+    }
+} {
+    var d = player_distance;
+    if {d < 3}{
+        while {d > 0} {
+            attack(d*5);
+            d = d - 1;
+        }
+    } {
+        while {d > 0}{
+            if {d/2 * 2 != d} {
+                move_random();
+            } {
+                move_towards();
+            }
+            d = d - 1;
+        }
+    }
+}
+
+define behav goblin
+var d = player_distance;
+if {health > maxhealth*2/3}{
+    while {d > 4}{
+        move_towards();
+        d = d - 1; 
+    }
+    attack();
+    if {phealth < maxphealth/2} {
+        attack();
+    }
+} {
+    if {health > maxhealth / 3} {
+        attack(10/player_distance + 2);
+    } {
+        flee();
+    }
+}
